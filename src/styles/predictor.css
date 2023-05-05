@@ -1,0 +1,8 @@
+.predictor-button {
+  background-color: #30d5c8;
+}
+
+.predictor-button:hover {
+  background-color: #0db6a8;
+  cursor: pointer;
+}

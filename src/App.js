@@ -1,25 +1,49 @@
-import logo from './logo.svg';
-import './App.css';
+import Inputs from "./components/Inputs"
+import ModelCard from "./components/ModelCard"
+import Predictor from "./components/Predictor"
+import SampleData from "./components/SampleData"
+import { useState } from "react"
+import { Container, Row, Col } from "react-bootstrap"
 
-function App() {
+const App = () => {
+  const [startLocation, setStartLocation] = useState()
+  const [endLocation, setEndLocation] = useState()
+  const [distance, setDistance] = useState()
+  const [weight, setWeight] = useState()
+  const [vehicleType, setVehicleType] = useState()
+  const [duration, setDuration] = useState()
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <Container>
+      <Row>
+        <Col>
+          <ModelCard />
+        </Col>
+        <Col>
+          <Inputs
+            setStartLocation={setStartLocation}
+            setEndLocation={setEndLocation}
+            setDistance={setDistance}
+            setWeight={setWeight}
+            setVehicleType={setVehicleType}
+            setDuration={setDuration}
+          />
+        </Col>
+        <Col>
+          <Predictor
+            startLocation={startLocation}
+            endLocation={endLocation}
+            distance={distance}
+            weight={weight}
+            vehicleType={vehicleType}
+            duration={duration}
+          />
+        </Col>
+      </Row>
+      <Row>
+        <SampleData />
+      </Row>
+    </Container>
+  )
 }
 
-export default App;
+export default App
