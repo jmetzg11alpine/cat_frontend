@@ -1,12 +1,28 @@
 import { Table, Card } from "react-bootstrap"
 
 import sample_data from "../data/sample_data.json"
-console.log(sample_data)
+import "../styles/40_samples.css"
 
-const SampleData = () => {
+const SampleData = ({
+  setStartLocation,
+  setEndLocation,
+  setDistance,
+  setWeight,
+  setVehicleType,
+  setDuration,
+}) => {
+  const upDateFeatures = (d) => {
+    setStartLocation(d.pickup_state)
+    setEndLocation(d.deliver_state)
+    setDistance(d.billed_miles)
+    setWeight(d.weight)
+    setVehicleType(d.vehicle_size)
+    setDuration(d.duration_hours)
+  }
+
   return (
-    <Card>
-      <Card.Title>40 Random Examples</Card.Title>
+    <Card className='sample_container mt-1'>
+      <Card.Title>40 Random Examples (rows are clickable)</Card.Title>
       <Card.Body>
         <Table striped bordered hover size='sm'>
           <thead>
@@ -26,7 +42,7 @@ const SampleData = () => {
           <tbody>
             {sample_data.map((d, i) => {
               return (
-                <tr key={i}>
+                <tr key={i} onClick={() => upDateFeatures(d)}>
                   <td>{d.pickup_state}</td>
                   <td>{d.deliver_state}</td>
                   <td>{d.duration_hours}</td>

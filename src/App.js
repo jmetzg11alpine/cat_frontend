@@ -6,25 +6,31 @@ import { useState } from "react"
 import { Container, Row, Col } from "react-bootstrap"
 
 const App = () => {
-  const [startLocation, setStartLocation] = useState()
+  const [startLocation, setStartLocation] = useState("CI")
   const [endLocation, setEndLocation] = useState()
   const [distance, setDistance] = useState()
   const [weight, setWeight] = useState()
   const [vehicleType, setVehicleType] = useState()
   const [duration, setDuration] = useState()
   return (
-    <Container>
+    <Container className='mt-2'>
       <Row>
         <Col>
           <ModelCard />
         </Col>
         <Col>
           <Inputs
+            startLocation={startLocation}
             setStartLocation={setStartLocation}
+            endLocation={endLocation}
             setEndLocation={setEndLocation}
+            distance={distance}
             setDistance={setDistance}
+            weight={weight}
             setWeight={setWeight}
+            vehicleType={vehicleType}
             setVehicleType={setVehicleType}
+            duration={duration}
             setDuration={setDuration}
           />
         </Col>
@@ -40,7 +46,14 @@ const App = () => {
         </Col>
       </Row>
       <Row>
-        <SampleData />
+        <SampleData
+          setStartLocation={setStartLocation}
+          setEndLocation={setEndLocation}
+          setDistance={setDistance}
+          setWeight={setWeight}
+          setVehicleType={setVehicleType}
+          setDuration={setDuration}
+        />
       </Row>
     </Container>
   )
