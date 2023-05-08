@@ -22,11 +22,13 @@ const SampleData = ({
 
   return (
     <Card className='sample_container mt-1'>
-      <Card.Title>40 Random Examples (rows are clickable)</Card.Title>
+      <Card.Title>200 Random Examples (rows are clickable)</Card.Title>
       <Card.Body>
         <Table striped bordered hover size='sm'>
           <thead>
-            <tr>
+            <tr
+              style={{ position: "sticky", top: "-1px", background: "white" }}
+            >
               <th>Start</th>
               <th>End</th>
               <th>Duration</th>

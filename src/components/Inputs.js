@@ -1,9 +1,4 @@
 import { Row, Col, Form, Card } from "react-bootstrap"
-import { useEffect } from "react"
-
-import pickup_at from "../data/pickup_at.json"
-import deliver_to from "../data/deliver_to"
-import vehicle_type from "../data/vehicle_types"
 
 const Inputs = ({
   startLocation,
