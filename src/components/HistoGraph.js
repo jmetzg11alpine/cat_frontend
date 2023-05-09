@@ -1,22 +1,26 @@
 import * as d3 from "d3"
 import { useRef, useEffect } from "react"
 
-const HistoGraph = ({ data, text }) => {
+const HistoGraph = ({ data, text, size }) => {
   const svgRef = useRef()
-  const width = window.innerWidth / 3.2
+  let width = ""
+  if (size === "small") {
+    width = window.innerWidth / 4.1
+  } else {
+    width = window.innerWidth / 3.2
+  }
+
   const height = window.innerHeight / 3.2
-  const bufferLeft = width * 0.09
-  const bufferRight = width * 0.03
+  const bufferLeft = width * 0.1
+  const bufferRight = width * 0.01
   const bufferTop = height * 0.1
-  const bufferBottom = height * 0.07
+  const bufferBottom = height * 0.079
   const barWidth = (width - bufferLeft - bufferRight) / data.length - 1
 
   useEffect(() => {
-    const svg = d3
-      .select(svgRef.current)
-      .select("svg")
-      .attr("width", width)
-      .attr("height", height)
+    const svg = d3.select(svgRef.current).select("svg")
+    svg.selectAll("*").remove()
+    svg.attr("width", width).attr("height", height)
 
     // add title
     svg
