@@ -2,7 +2,7 @@ import { Container, Row, Col, Form } from "react-bootstrap"
 import { useState, useEffect, useRef } from "react"
 import * as d3 from "d3"
 
-const DataScatter = ({ startDate, endDate, xValue, yValue, data }) => {
+const DataScatter = ({ xValue, yValue, data }) => {
   const svgRef = useRef()
   const width = window.innerWidth * 0.8
   const height = window.innerHeight * 0.7
@@ -67,6 +67,7 @@ const DataScatter = ({ startDate, endDate, xValue, yValue, data }) => {
         .attr("transform", `translate(${bufferLeft}, ${bufferTop})`)
         .call(d3.axisLeft(yAxis))
 
+      // make like this: https://stackoverflow.com/questions/63918899/how-to-break-line-in-d3-js-tooltip
       svg
         .selectAll("circle")
         .data(data)
@@ -82,14 +83,15 @@ const DataScatter = ({ startDate, endDate, xValue, yValue, data }) => {
           tooltip
             .style("visibility", "visible")
             .text(
-              `duration-${d.duration_hours},
-             start-${d.pickup_state},
+              `duration-${d.duration_hours}
+               start-${d.pickup_state},<br />
              end-${d.deliver_state},
              distance-${d.billed_miles},
              cost-${d.total},
              weight: ${d.weight},
              vehicle: ${d.vehicle_size}, delivery date: ${deliveryDate}`
             )
+            .attr("data-html", "true")
             .style("top", e.pageY - 160 + "px")
             .style("left", e.pageX - 70 + "px")
         })

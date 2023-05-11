@@ -22,7 +22,6 @@ const Predictor = ({
   }
   const handlePrediction = async (e) => {
     e.preventDefault()
-    console.log(body)
     const response = await fetch("https://cat-model-rpm-06.herokuapp.com/", {
       method: "POST",
       body: JSON.stringify(body),
