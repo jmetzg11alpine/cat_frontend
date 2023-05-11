@@ -1,29 +1,28 @@
+import React from "react"
 import { Table, Card } from "react-bootstrap"
-
-import sample_data from "../data/sample_data.json"
+import * as d3 from "d3"
 import "../styles/sample-display.css"
 
-const SampleData = ({
-  setStartLocation,
-  setEndLocation,
-  setDistance,
-  setWeight,
-  setVehicleType,
-  setDuration,
-}) => {
-  const upDateFeatures = (d) => {
-    setStartLocation(d.pickup_state)
-    setEndLocation(d.deliver_state)
-    setDistance(d.billed_miles)
-    setWeight(d.weight)
-    setVehicleType(d.vehicle_size)
-    setDuration(d.duration_hours)
+const ErrorData = ({ data, label }) => {
+  let colorScale = ""
+  if (label > 0) {
+    data.sort((a, b) => b.error - a.error)
+    colorScale = d3
+      .scaleLinear()
+      .domain([d3.min(data, (d) => d.error), d3.max(data, (d) => d.error)])
+      .range(["#e4fde1", "#ffb400"])
+  } else {
+    data.sort((a, b) => a.error - b.error)
+    colorScale = d3
+      .scaleLinear()
+      .domain([d3.min(data, (d) => d.error), d3.max(data, (d) => d.error)])
+      .range(["#ffb400", "#e4fde1"])
   }
 
   return (
-    <Card className='sample-container mt-2'>
-      <Card.Title>200 Random Examples (rows are clickable)</Card.Title>
-      <Card.Body>
+    <Card className='sample-container mt-1 ms-5 me-5'>
+      <Card.Title className='p-1 mb-0'>{data.length} Examples</Card.Title>
+      <Card.Body className='pt-1'>
         <Table striped bordered hover size='sm'>
           <thead>
             <tr
@@ -36,15 +35,16 @@ const SampleData = ({
               <th>Weight</th>
               <th>Distance</th>
               <th>Total</th>
-              <th>Predicted Total</th>
               <th>RPM</th>
               <th>Predicted RPM</th>
+              <th>Error</th>
             </tr>
           </thead>
           <tbody>
-            {sample_data.map((d, i) => {
+            {data.map((d, i) => {
+              const color = colorScale(d.error)
               return (
-                <tr key={i} onClick={() => upDateFeatures(d)}>
+                <tr key={i}>
                   <td>{d.pickup_state}</td>
                   <td>{d.deliver_state}</td>
                   <td>{d.duration_hours}</td>
@@ -52,12 +52,12 @@ const SampleData = ({
                   <td>{d.weight}</td>
                   <td>{d.billed_miles}</td>
                   <td>{d.total}</td>
-                  <td style={{ backgroundColor: "#30d5c8" }}>
-                    {Math.round(d.predicted)}
-                  </td>
                   <td>{Math.round(d.rpm * 100) / 100}</td>
                   <td style={{ backgroundColor: "#30d5c8" }}>
                     {Math.round(d.predicted_rpm * 100) / 100}
+                  </td>
+                  <td style={{ backgroundColor: color }}>
+                    {Math.round(d.error * 100) / 100}
                   </td>
                 </tr>
               )
@@ -69,4 +69,4 @@ const SampleData = ({
   )
 }
 
-export default SampleData
+export default ErrorData

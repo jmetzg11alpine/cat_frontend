@@ -1,0 +1,4 @@
+.sample-container {
+  height: 50vh;
+  overflow-y: scroll;
+}
