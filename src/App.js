@@ -6,7 +6,7 @@ import { useState } from "react"
 import { Container, Row, Col } from "react-bootstrap"
 
 const App = () => {
-  const [startLocation, setStartLocation] = useState("CI")
+  const [startLocation, setStartLocation] = useState()
   const [endLocation, setEndLocation] = useState()
   const [distance, setDistance] = useState()
   const [weight, setWeight] = useState()

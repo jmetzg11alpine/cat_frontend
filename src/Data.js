@@ -1,67 +1,150 @@
-import { Container, Row, Col } from "react-bootstrap"
+import { Container, Row, Col, Form } from "react-bootstrap"
+import { useState, useEffect } from "react"
+import Select from "react-select"
 import HistoGraph from "./components/HistoGraph"
 import DataScatter from "./components/DataScatter"
 
-import deliver from "./data/deliver_data.json"
-import pickup from "./data/pickup_data.json"
-import distance from "./data/distance_data.json"
-import duration from "./data/duration_data.json"
-import total from "./data/total_data.json"
-import vehicle from "./data/vehicle_data.json"
-import weight from "./data/weight_data.json"
-
 const Data = () => {
+  const [data, setData] = useState({
+    costs: [],
+    deliver_states: [],
+    distances: [],
+    durations: [],
+    pickup_states: [],
+    vehicles: [],
+    weights: [],
+    all_data: [],
+  })
+  const [startDate, setStartDate] = useState("2021-01-04")
+  const [endDate, setEndDate] = useState("2023-03-02")
+  const [xValue, setXValue] = useState()
+  const [yValue, setYValue] = useState()
+  const options = [
+    { value: "deliver_state", label: "Delivery" },
+    { value: "pickup_state", label: "Pickup" },
+    { value: "vehicle_size", label: "Vehicle" },
+    { value: "billed_miles", label: "Distance" },
+    { value: "duration_hours", label: "Duration" },
+    { value: "weight", label: "Weight" },
+    { value: "total", label: "Cost" },
+  ]
+  const body = {
+    startDate: startDate,
+    endDate: endDate,
+  }
+  const getData = async (startDate, endDate) => {
+    const response = await fetch(
+      "https://cat-model-rpm-06.herokuapp.com/data",
+      {
+        method: "POST",
+        body: JSON.stringify(body),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
+    const results = await response.json()
+    setData(results)
+  }
+  useEffect(() => {
+    getData(startDate, endDate)
+  }, [startDate, endDate])
+
   return (
     <Container className='m-0' style={{ maxWidth: "100%" }}>
-      <div>
-        The data used to train the model. Out of the 50,000+ plus samples only
-        16,445 were used to build the model. These are the distributions of the
-        seven features used to train the model.
-      </div>
+      <Row className='mb-3'>
+        <Form.Group as={Col} controlId='formGridEmail'>
+          <Form.Label>Start - delivery date</Form.Label>
+          <Form.Control
+            type='date'
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
+          ></Form.Control>
+        </Form.Group>
+        <Form.Group as={Col} controlId='formGridPassword'>
+          <Form.Label>End - deliver date</Form.Label>
+          <Form.Control
+            type='date'
+            value={endDate}
+            onChange={(e) => setEndDate(e.target.value)}
+          ></Form.Control>
+        </Form.Group>
+        <Form.Group as={Col} controlId='formGridEmail'>
+          <Form.Label>X-Axis</Form.Label>
+          <Select options={options} onChange={(e) => setXValue(e.value)} />
+        </Form.Group>
+        <Form.Group as={Col} controlId='formGridPassword'>
+          <Form.Label>Y-axis</Form.Label>
+          <Select options={options} onChange={(e) => setYValue(e.value)} />
+        </Form.Group>
+      </Row>
+      <Row>
+        {xValue && yValue ? (
+          <DataScatter
+            startDate={startDate}
+            endDate={endDate}
+            xValue={xValue}
+            yValue={yValue}
+            data={data.all_data}
+          />
+        ) : (
+          <div>Pick an X-axis and Y-axis to view a scatter plot</div>
+        )}
+      </Row>
       <Row style={{ height: "35vh" }}>
         <Col className='p-0 ps-2'>
-          <HistoGraph data={deliver} text={"Delivery States"} size={"big"} />
+          <HistoGraph
+            data={data.deliver_states}
+            text={"Delivery States"}
+            size={"big"}
+          />
         </Col>
         <Col className='p-0'>
-          <HistoGraph data={pickup} text={"Pickup States"} size={"big"} />
+          <HistoGraph
+            data={data.pickup_states}
+            text={"Pickup States"}
+            size={"big"}
+          />
         </Col>
         <Col className='p-0'>
-          <HistoGraph data={vehicle} text={"Vehicle Type"} size={"big"} />
+          <HistoGraph data={data.vehicles} text={"Vehicle Type"} size={"big"} />
         </Col>
       </Row>
       <Row style={{ height: "35vh" }}>
         <Col className='p-0 ps-2'>
           <HistoGraph
-            data={distance}
+            data={data.distances}
             text={"Distance in hundres of miles"}
             size={"small"}
           />
         </Col>
         <Col className='p-0'>
           <HistoGraph
-            data={weight}
+            data={data.weights}
             text={"Weight in thousands of pounds"}
             size={"small"}
           />
         </Col>
         <Col className='p-0'>
           <HistoGraph
-            data={duration}
-            text={"Difference between deliver and pickup in hours"}
+            data={data.durations}
+            text={"Deliver minus pickup in hours"}
             size={"small"}
           />
         </Col>
         <Col className='p-0'>
           <HistoGraph
-            data={total}
+            data={data.costs}
             text={"Total cost in thousands of dollars"}
             size={"small"}
           />
         </Col>
       </Row>
-      <Row>
-        <DataScatter />
-      </Row>
+      <div>
+        The data used to train the model. Out of the 50,000+ plus samples only
+        16,445 were used to build the model. These are the distributions of the
+        seven features used to train the model.
+      </div>
     </Container>
   )
 }

@@ -37,17 +37,18 @@ const HistoGraph = ({ data, text, size }) => {
     svg
       .append("g")
       .attr("transform", `translate(${bufferLeft}, ${height - bufferBottom})`)
-      .call(d3.axisBottom(xAxis))
+      .call(d3.axisBottom(xAxis).tickSizeOuter([]))
 
     //   y axis
     const yAxis = d3
       .scaleLinear()
       .domain([0, d3.max(data.map((d) => d.value))])
       .range([height - bufferBottom - bufferTop, 0])
+
     svg
       .append("g")
       .attr("transform", `translate(${bufferLeft}, ${bufferTop})`)
-      .call(d3.axisLeft(yAxis))
+      .call(d3.axisLeft(yAxis).tickSizeOuter([]))
 
     //   bars
     svg
@@ -59,7 +60,7 @@ const HistoGraph = ({ data, text, size }) => {
       .attr("width", barWidth - 4)
       .attr("height", (d) => height - yAxis(d.value) - bufferTop - bufferBottom)
       .attr("fill", "#30d5c8")
-  }, [])
+  }, [data])
   return (
     <div ref={svgRef}>
       <svg></svg>
