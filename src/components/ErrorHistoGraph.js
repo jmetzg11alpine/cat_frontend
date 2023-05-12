@@ -12,18 +12,17 @@ const ErrorHistoGraph = ({ setLabelData, setLabel }) => {
   const bufferBottom = height * 0.07
   const barWidth = (width - bufferLeft - bufferRight) / data.length - 1
 
+  const url = "https://cat-model-rpm-06.herokuapp.com/error"
+  // const url = "http://localhost:8000/error"
   const getData = async (label) => {
     setLabel(label)
-    const resposne = await fetch(
-      "https://cat-model-rpm-06.herokuapp.com/error",
-      {
-        method: "POST",
-        body: JSON.stringify({ label: label }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    )
+    const resposne = await fetch(url, {
+      method: "POST",
+      body: JSON.stringify({ label: label }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
     const results = await resposne.json()
     setLabelData(results)
   }

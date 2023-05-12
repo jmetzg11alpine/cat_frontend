@@ -20,9 +20,11 @@ const Predictor = ({
     vehicleType: vehicleType,
     duration: duration,
   }
+  const url = "https://cat-model-rpm-06.herokuapp.com/"
+  // const url = "http://localhost:8000/"
   const handlePrediction = async (e) => {
     e.preventDefault()
-    const response = await fetch("https://cat-model-rpm-06.herokuapp.com/", {
+    const response = await fetch(url, {
       method: "POST",
       body: JSON.stringify(body),
       headers: {

@@ -32,17 +32,16 @@ const Data = () => {
     startDate: startDate,
     endDate: endDate,
   }
+  const url = "https://cat-model-rpm-06.herokuapp.com/data"
+  // const url = "http://localhost:8000/data"
   const getData = async () => {
-    const response = await fetch(
-      "https://cat-model-rpm-06.herokuapp.com/data",
-      {
-        method: "POST",
-        body: JSON.stringify(body),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    )
+    const response = await fetch(url, {
+      method: "POST",
+      body: JSON.stringify(body),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
     const results = await response.json()
     setData(results)
   }

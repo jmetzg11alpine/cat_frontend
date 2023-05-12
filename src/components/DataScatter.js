@@ -21,10 +21,26 @@ const DataScatter = ({ xValue, yValue, data }) => {
         .select(svgRef.current)
         .append("div")
         .style("position", "absolute")
-        .text("donkey carrot")
         .style("background", "#FCD3DE")
         .style("visibility", "hidden")
-        .style("width", "15vw")
+        .style("width", "20vw")
+
+      function showToolTip(e, d) {
+        const deliveryDate = d.delivery_date.split("T", 1)[0]
+        tooltip
+          .style("visibility", "visible")
+          .style("top", e.pageY - height / 2.8 + "px")
+          .style("left", e.pageX - width / 10 + "px")
+          .html(`<b>DELIVERY DATE</b>: ${deliveryDate} <br>
+                 <b>PICKUP STATE</b>: ${d.pickup_state} <br>
+                 <b>Delivery State</b>: ${d.deliver_state} <br>
+                 <b>Duration</b>: ${d.duration_hours} <br>
+                 <b>Vehicle size</b>: ${d.vehicle_size} <br>
+                 <b>Weight:</b> ${d.weight} <br>
+                 <b>Distance:</b> ${d.billed_miles} <br>
+                 <b>Cost</b>: ${d.total}`)
+        console.log(d)
+      }
 
       let xAxis = ""
       if (
@@ -79,21 +95,7 @@ const DataScatter = ({ xValue, yValue, data }) => {
         .attr("opacity", ".2")
         .on("mouseover", function (e, d) {
           d3.select(this).attr("opacity", ".7").attr("r", 12)
-          const deliveryDate = d.delivery_date.split("T", 1)[0]
-          tooltip
-            .style("visibility", "visible")
-            .text(
-              `duration-${d.duration_hours}
-               start-${d.pickup_state},<br />
-             end-${d.deliver_state},
-             distance-${d.billed_miles},
-             cost-${d.total},
-             weight: ${d.weight},
-             vehicle: ${d.vehicle_size}, delivery date: ${deliveryDate}`
-            )
-            .attr("data-html", "true")
-            .style("top", e.pageY - 160 + "px")
-            .style("left", e.pageX - 70 + "px")
+          showToolTip(e, d)
         })
         .on("mouseout", function (e, d) {
           d3.select(this).attr("opacity", ".2").attr("r", 7)
