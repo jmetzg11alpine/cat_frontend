@@ -29,8 +29,8 @@ const DataScatter = ({ xValue, yValue, data }) => {
         const deliveryDate = d.delivery_date.split("T", 1)[0]
         tooltip
           .style("visibility", "visible")
-          .style("top", e.pageY - height / 2.8 + "px")
-          .style("left", e.pageX - width / 10 + "px")
+          .style("top", e.pageY - 200 + "px")
+          .style("left", e.pageX - 150 / 10 + "px")
           .html(`<b>DELIVERY DATE</b>: ${deliveryDate} <br>
                  <b>PICKUP STATE</b>: ${d.pickup_state} <br>
                  <b>Delivery State</b>: ${d.deliver_state} <br>
@@ -83,7 +83,6 @@ const DataScatter = ({ xValue, yValue, data }) => {
         .attr("transform", `translate(${bufferLeft}, ${bufferTop})`)
         .call(d3.axisLeft(yAxis))
 
-      // make like this: https://stackoverflow.com/questions/63918899/how-to-break-line-in-d3-js-tooltip
       svg
         .selectAll("circle")
         .data(data)
